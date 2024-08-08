@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useOutletContext } from "react-router-dom";
 
 function UserProfile() {
-  const [user, setUser] = useState({});
-  const params = useParams();
-  const userId = params.id;
+  const { id } = useParams();  // Extract userId from route parameters
+  const users = useOutletContext();  // Access user data passed via Outlet context
 
-  useEffect(() =>{
-    fetch(`http://localhost:4000/users/${userId}`)
-    .then(r => r.json())
-    .then(data => setUser(data))
-    .catch(error => console.error(error));
-  }, [userId]);
+  // Find the specific user from the list of users
+  const user = users.find(user => user.id === parseInt(id));
 
-  if(!user.name){
+  // Display loading text if user is not found or still loading
+  if (!user) {
     return <h1>Loading...</h1>;
-  };
+  }
 
-  return(  
-      <aside>
-        <h1>{user.name}</h1>
-      </aside>
+  return (
+    <aside>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p> {/* Optional: Display additional user information */}
+    </aside>
   );
-};
+}
 
 export default UserProfile;

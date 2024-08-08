@@ -1,12 +1,18 @@
+// Home.js
+import { Outlet, useOutletContext } from "react-router-dom";
+import UserCard from "../components/UserCard";
 
-function App() {
+function Home() {
+  const users = useOutletContext();
+  const userList = users.map(user => <UserCard key={user.id} user={user}/>);
+
   return (
-    <>
-      <header>
-        
-      </header>
-    </>
+    <main>
+      <h1>Home!</h1>
+      <Outlet />
+      {userList}
+    </main>
   );
-};
+}
 
-export default App;
+export default Home;
